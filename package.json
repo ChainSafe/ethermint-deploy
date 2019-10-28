@@ -1,0 +1,23 @@
+{
+  "name": "ethermint-scripts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./web3/deploy_contract.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChainSafe/ethermint-scripts.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ChainSafe/ethermint-scripts/issues"
+  },
+  "homepage": "https://github.com/ChainSafe/ethermint-scripts#readme",
+  "dependencies": {
+    "web3": "^1.2.1"
+  }
+}
