@@ -28,14 +28,18 @@ async function deployContract(account) {
     })
     .send({
       from: account,
-      gas: 470000,
-      gasPrice: 20
+      gas: 200000,
+      gasPrice: 1
     })
     .then(function(contractInstance) {
       console.log("Contract Address: ", contractInstance.options.address);
       return contractInstance;
     })
-    .catch(err => console.log(err));
+    .catch(function(err) {
+      // Contract failed to deploy
+      console.error(err);
+      process.exit();
+    });
 }
 
 async function contractAdd(contractInstance, sender) {
@@ -44,10 +48,10 @@ async function contractAdd(contractInstance, sender) {
     .send({
       from: sender,
       gas: 400000,
-      gasPrice: 10
+      gasPrice: 1
     })
     .then(function(res) {
-      console.log("Add transaction completed at block: ", res.blockNumber)
+      console.log("Add transaction completed at block: ", res.blockNumber);
       return res;
     });
 }
@@ -56,15 +60,17 @@ async function getContractCounter(contractInstance) {
   return contractInstance.methods
     .getCounter()
     .call()
-    .catch(err => console.log(err));
+    .catch(err => console.error(err));
 }
 
 async function run() {
   const sender = await getCurrentAccount();
   const contract = await deployContract(sender);
+  // const counter = await getContractCounter(contract);
+  // console.log("counter pre increment is: ", counter);
   await contractAdd(contract, sender);
-  const counter = await getContractCounter(contract);
-  console.log("counter is: ", counter);
+  counter = await getContractCounter(contract);
+  console.log("counter post increment is: ", counter);
 }
 
 run().then(() => console.log("done"));
