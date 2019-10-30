@@ -1,27 +1,21 @@
 const Web3 = require("web3");
-const fs = require("fs");
+const utils = require("./compile_utils")
 
 const web3 = new Web3(
   new Web3.providers.HttpProvider("http://localhost:8545/rpc")
 );
-
-const contract = fs.readFileSync("./contracts/build/Counter.bin").toString();
-const abiData = fs.readFileSync("./contracts/build/Counter.abi").toString();
-
-const ABI = JSON.parse(abiData);
-
-const testContract = new web3.eth.Contract(ABI);
 
 async function getCurrentAccount() {
   const currentAccounts = await web3.eth.getAccounts();
   console.log("Unlocked account address: \t", currentAccounts[0]);
   return currentAccounts[0];
 }
-async function deployContract(account) {
+async function deployContract(contractData, account) {
+  const testContract = new web3.eth.Contract(contractData.abi);
   return testContract
     .deploy({
       arguments: ["1.0"],
-      data: "0x" + contract
+      data: "0x" + contractData.bytecode
     })
     .send({
       from: account,
@@ -61,13 +55,27 @@ async function getContractCounter(contractInstance) {
 }
 
 async function run() {
+  // Compile contract
+  console.log("Compiling contract code...")
+  const config = utils.createConfiguration()
+  const compiled = utils.compileSources(config)
+  utils.printCompileErrors(compiled)
+  contractData = utils.getCounterContractData(compiled)
+  if (contractData == undefined) {
+    console.log("could not retrieve compiled contract data")
+    process.exit();
+  }
+
+  // Deploy and interact with accounts on node
   const sender = await getCurrentAccount();
-  const contract = await deployContract(sender);
+  console.log("Deploying contract...")
+  const contract = await deployContract(contractData, sender);
   let counter = await getContractCounter(contract);
-  console.log("counter pre increment is: \t", counter);
+  console.log("Counter pre increment is: \t", counter);
+  console.log("Sending add transaction...")
   await contractAdd(contract, sender);
   counter = await getContractCounter(contract);
-  console.log("counter post increment is: \t", counter);
+  console.log("Counter post increment is: \t", counter);
 }
 
 run().then(() => console.log("done"));

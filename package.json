@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/ChainSafe/ethermint-scripts#readme",
   "dependencies": {
+    "solc": "^0.5.12",
     "web3": "^1.2.1"
   }
 }
