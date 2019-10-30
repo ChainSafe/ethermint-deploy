@@ -10,7 +10,7 @@ async function getCurrentAccount() {
   console.log("Unlocked account address: \t", currentAccounts[0]);
   return currentAccounts[0];
 }
-async function deployContract(contractData, account) {
+async function deployContract(contractData, sender) {
   const testContract = new web3.eth.Contract(contractData.abi);
   return testContract
     .deploy({
@@ -18,7 +18,7 @@ async function deployContract(contractData, account) {
       data: "0x" + contractData.bytecode
     })
     .send({
-      from: account,
+      from: sender,
       gas: 200000,
       gasPrice: 1
     })
@@ -38,11 +38,11 @@ async function contractAdd(contractInstance, sender) {
     .add()
     .send({
       from: sender,
-      gas: 30000,
+      gas: 50000,
       gasPrice: 1
     })
     .then(function(res) {
-      console.log("Add transaction finalized in block: \t", res.blockNumber);
+      console.log("Add tx finalized in block: \t", res.blockNumber);
       return res;
     });
 }
@@ -78,4 +78,4 @@ async function run() {
   console.log("Counter post increment is: \t", counter);
 }
 
-run().then(() => console.log("done"));
+run();

@@ -1,7 +1,7 @@
 pragma solidity ^0.5.11;
 
 contract Counter {
-  uint256 counter = 5;
+  uint256 counter = 0;
 
   function add() public {
     counter++;
