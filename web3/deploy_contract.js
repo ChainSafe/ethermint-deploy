@@ -2,7 +2,7 @@ const Web3 = require("web3");
 const utils = require("./compile_utils")
 
 const web3 = new Web3(
-  new Web3.providers.HttpProvider("http://localhost:8545/rpc")
+  new Web3.providers.HttpProvider("http://localhost:8545")
 );
 
 async function getCurrentAccount() {
