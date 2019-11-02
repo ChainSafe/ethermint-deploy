@@ -9,7 +9,7 @@ module.exports = {
       sources: {
         "Counter.sol": {
           content: fs.readFileSync(
-            path.resolve(__dirname, "..", "contracts", "Counter.sol"),
+            path.resolve(__dirname, "..", "contracts", "counter.sol"),
             "utf8"
           )
         }
