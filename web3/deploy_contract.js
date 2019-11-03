@@ -1,9 +1,7 @@
 const Web3 = require("web3");
-const utils = require("./compile_utils")
+const utils = require("./compile_utils");
 
-const web3 = new Web3(
-  new Web3.providers.HttpProvider("http://localhost:8545")
-);
+const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 
 async function getCurrentAccount() {
   const currentAccounts = await web3.eth.getAccounts();
@@ -23,7 +21,10 @@ async function deployContract(contractData, sender) {
       gasPrice: 1
     })
     .then(function(contractInstance) {
-      console.log("Deployed contract Address: \t", contractInstance.options.address);
+      console.log(
+        "Deployed contract Address: \t",
+        contractInstance.options.address
+      );
       return contractInstance;
     })
     .catch(function(err) {
@@ -56,23 +57,23 @@ async function getContractCounter(contractInstance) {
 
 async function run() {
   // Compile contract
-  console.log("Compiling contract code...")
-  const config = utils.createConfiguration()
-  const compiled = utils.compileSources(config)
-  utils.printCompileErrors(compiled)
-  contractData = utils.getCounterContractData(compiled)
+  console.log("Compiling contract code...");
+  const config = utils.createConfiguration();
+  const compiled = utils.compileSources(config);
+  utils.printCompileErrors(compiled);
+  contractData = utils.getCounterContractData(compiled);
   if (contractData == undefined) {
-    console.log("could not retrieve compiled contract data")
+    console.log("could not retrieve compiled contract data");
     process.exit();
   }
 
   // Deploy and interact with accounts on node
   const sender = await getCurrentAccount();
-  console.log("Deploying contract...")
+  console.log("Deploying contract...");
   const contract = await deployContract(contractData, sender);
   let counter = await getContractCounter(contract);
   console.log("Counter pre increment is: \t", counter);
-  console.log("Sending add transaction...")
+  console.log("Sending add transaction...");
   await contractAdd(contract, sender);
   counter = await getContractCounter(contract);
   console.log("Counter post increment is: \t", counter);

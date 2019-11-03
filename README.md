@@ -29,8 +29,8 @@ Install Ethermint and bootstrap node (can configure if needed, just a starter):
 ```
 make install 
 rm -rf ~/.emint*
-emintd init moniker --chain-id 3
-emintcli config chain-id 3
+emintd init moniker --chain-id 8
+emintcli config chain-id 8
 emintcli config output json
 emintcli config indent true
 emintcli config trust-node true
