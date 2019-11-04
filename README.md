@@ -34,11 +34,9 @@ emintcli config chain-id 8
 emintcli config output json
 emintcli config indent true
 emintcli config trust-node true
-echo "testpass" | emintcli keys add genesiskey
 echo "testpass" | emintcli emintkeys add mykey
-emintd add-genesis-account $(emintcli keys show genesiskey -a) 1000photon,100000000stake
-emintd add-genesis-account $(emintcli emintkeys show mykey -a) 1000000000photon,1000000000stake
-echo "testpass" | emintd gentx --name genesiskey
+emintd add-genesis-account $(emintcli emintkeys show mykey -a) 1000000000000000000photon,1000000000000000000stake
+echo "testpass" | emintd gentx --name mykey
 emintd collect-gentxs
 emintd validate-genesis
 emintd start --pruning=nothing
