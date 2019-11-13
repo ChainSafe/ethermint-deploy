@@ -34,13 +34,27 @@ emintcli config chain-id 8
 emintcli config output json
 emintcli config indent true
 emintcli config trust-node true
-echo "testpass" | emintcli emintkeys add mykey
-emintd add-genesis-account $(emintcli emintkeys show mykey -a) 1000000000000000000photon,1000000000000000000stake
+echo "testpass" | emintcli keys add mykey
+emintd add-genesis-account $(emintcli keys show mykey -a) 1000000000000000000photon,1000000000000000000stake
 echo "testpass" | emintd gentx --name mykey
 emintd collect-gentxs
 emintd validate-genesis
 emintd start --pruning=nothing
 
+```
+
+Now that the Ethermint keybase uses the Cosmos keybase, the command needed to retrieve the Ethereum
+address from a cosmos one is:
+```
+emintcli keys parse <address>
+```
+
+and the bytes field can be used as an ethereum address.
+
+To query just the field to be used inside of a command, `jq` can be used:
+
+```
+emintcli keys parse $(emintcli keys show mykey -a) | jq .bytes -r
 ```
 
 > Note: if your gopath isn't configured correctly to use installed go binaries, use `make build` instead of make install, and replace all `emintcli` and `emintd` references to `./build/emintcli` and `./build/emintd` respectively
