@@ -25,43 +25,5 @@ git clone https://github.com/ChainSafe/ethermint.git
 cd ethermint
 ```
 
-Install Ethermint and bootstrap node (can configure if needed, just a starter):
-```
-make install 
-rm -rf ~/.emint*
-emintd init moniker --chain-id 8
-emintcli config chain-id 8
-emintcli config output json
-emintcli config indent true
-emintcli config trust-node true
-echo "testpass" | emintcli keys add mykey
-emintd add-genesis-account $(emintcli keys show mykey -a) 1000000000000000000photon,1000000000000000000stake
-echo "testpass" | emintd gentx --name mykey
-emintd collect-gentxs
-emintd validate-genesis
-emintd start --pruning=nothing
-
-```
-
-Now that the Ethermint keybase uses the Cosmos keybase, the command needed to retrieve the Ethereum
-address from a cosmos one is:
-```
-emintcli keys parse <address>
-```
-
-and the bytes field can be used as an ethereum address.
-
-To query just the field to be used inside of a command, `jq` can be used:
-
-```
-emintcli keys parse $(emintcli keys show mykey -a) | jq .bytes -r
-```
-
-> Note: if your gopath isn't configured correctly to use installed go binaries, use `make build` instead of make install, and replace all `emintcli` and `emintd` references to `./build/emintcli` and `./build/emintd` respectively
-
-In another process, run:
-```
-echo "testpass" | emintcli rest-server --laddr "tcp://localhost:8545" --unlock-key mykey
-```
-
-And this will allow the script to run against the local web3 api server!
+To start the node and RPC server, follow the `README.md` at https://github.com/ChainSafe/ethermint
+> Start instructions have changed slightly to use the OS keyring since the Getting started video
