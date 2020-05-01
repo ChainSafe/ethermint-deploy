@@ -17,7 +17,7 @@ async function deployContract(contractData, sender) {
     })
     .send({
       from: sender,
-      gas: 200000,
+      gas: 300000,
       gasPrice: 1
     })
     .then(function(contractInstance) {
@@ -39,7 +39,7 @@ async function contractAdd(contractInstance, sender) {
     .add()
     .send({
       from: sender,
-      gas: 50000,
+      gas: 200000,
       gasPrice: 1
     })
     .then(function(res) {
@@ -79,4 +79,4 @@ async function run() {
   console.log("Counter post increment is: \t", counter);
 }
 
-run();
+run()
