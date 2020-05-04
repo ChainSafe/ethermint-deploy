@@ -17,17 +17,17 @@ async function deployContract(contractData, sender) {
     })
     .send({
       from: sender,
-      gas: 300000,
+      gas: 200000,
       gasPrice: 1
     })
-    .then(function(contractInstance) {
+    .then(function (contractInstance) {
       console.log(
         "Deployed contract Address: \t",
         contractInstance.options.address
       );
       return contractInstance;
     })
-    .catch(function(err) {
+    .catch(function (err) {
       // Contract failed to deploy
       console.error(err);
       process.exit();
@@ -39,10 +39,10 @@ async function contractAdd(contractInstance, sender) {
     .add()
     .send({
       from: sender,
-      gas: 200000,
+      gas: 50000,
       gasPrice: 1
     })
-    .then(function(res) {
+    .then(function (res) {
       console.log("Add tx finalized in block: \t", res.blockNumber);
       return res;
     });
